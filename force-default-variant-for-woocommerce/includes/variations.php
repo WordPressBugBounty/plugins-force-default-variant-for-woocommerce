@@ -31,7 +31,7 @@ function hpy_fdv_attribute_args( $args = array() ) {
 			$to_use        = $meta[ $required ][0];
 			$product_child = new WC_Product_Variation( $child );
 			$prices[ $i ]  = array( $product_child->get_price(), $to_use );
-			$i ++;
+			++$i;
 		}
 
 		if ( 'price-low' === $sortby || 'price-high' === $sortby ) {
@@ -49,7 +49,6 @@ function hpy_fdv_attribute_args( $args = array() ) {
 	}
 
 	return $args;
-
 }
 
 /**
@@ -125,7 +124,7 @@ function hpy_fdv_default_attribute( $defaults ) {
 		}
 
 		if ( $hide_oos && ! $stock_status ) {
-			//If Hide out of Stock is set, and this variant is out of stock, then skip.
+			// If Hide out of Stock is set, and this variant is out of stock, then skip.
 			continue;
 		}
 
@@ -140,6 +139,7 @@ function hpy_fdv_default_attribute( $defaults ) {
 					'stock_level' => $stock_qty,
 					'menu_order'  => $menu_order,
 					'title'       => $title,
+					'stock_count' => $stock_qty,
 				)
 			);
 		}
@@ -176,6 +176,10 @@ function hpy_fdv_default_attribute( $defaults ) {
 
 		case 'alphabetically':
 			$attributes = hpy_fdv_multidimensional_sort( $attributes, 'alphabetically' );
+			break;
+
+		case 'stock':
+			$attributes = hpy_fdv_multidimensional_sort( $attributes, 'stock' );
 			break;
 
 		default:
@@ -248,10 +252,10 @@ function hpy_fdv_default_attribute( $defaults ) {
 	return apply_filters( 'hpy_fdv_attributes_return', $defaults );
 }
 
-function hpy_fdv_remove_element_by_value($array, $key, $value){
-	foreach ($array as $subKey => $subArray) {
-		if ($subArray[$key] == $value) {
-			unset($array[$subKey]);
+function hpy_fdv_remove_element_by_value( $array, $key, $value ) {
+	foreach ( $array as $subKey => $subArray ) {
+		if ( $subArray[ $key ] == $value ) {
+			unset( $array[ $subKey ] );
 		}
 	}
 	return $array;
@@ -267,7 +271,7 @@ function hpy_fdv_secondary_sort( $attributes, $sortby, $origial_sort ) {
 	foreach ( $attribute_split as $skey => $split ) {
 		switch ( apply_filters( 'hpy_fdv_secondary_sort_switch', $sortby ) ) {
 
-			//Sort using the Secondary filter - Currently defaults to Position, so don't change anything if set to Position
+			// Sort using the Secondary filter - Currently defaults to Position, so don't change anything if set to Position
 			case 'then_sales':
 				$split = hpy_fdv_multidimensional_sort( $split, 'sales' );
 				break;
@@ -292,7 +296,6 @@ function hpy_fdv_secondary_sort( $attributes, $sortby, $origial_sort ) {
 	$attributes = hpy_fdv_array_flatten( $attribute_split );
 
 	return apply_filters( 'hpy_fdv_secondary_sort_filter', $attributes );
-
 }
 
 function hpy_fdv_array_flatten( $array ) {
@@ -353,18 +356,19 @@ function hpy_fdv_multidimensional_sort( $array, $check, $attribute = '' ) {
 	} elseif ( 'menu_order' === $check ) {
 		usort(
 			$array,
-			function( $a, $b ) use ( $attribute ) {
+			function ( $a, $b ) use ( $attribute ) {
 				return $a['menu_order'][ $attribute ] - $b['menu_order'][ $attribute ];
 			}
 		);
 	} elseif ( 'alphabetically' === $check ) {
 		usort( $array, 'hpy_fdv_sort_alphabetically' );
+	} elseif ( 'stock' === $check ) {
+		usort( $array, 'hpy_fdv_sort_stock' );
 	} else {
 		usort( $array, 'hpy_fdv_sort_by_id' );
 	}
 
 	return apply_filters( 'hpy_fdv_sort_filter', $array );
-
 }
 
 function hpy_fdv_sort_by_price( $a, $b ) {
@@ -383,6 +387,13 @@ function hpy_fdv_sort_alphabetically( $a, $b ) {
 	return strcmp( $a['title'], $b['title'] );
 }
 
+function hpy_fdv_sort_stock( $a, $b ) {
+	if ( $b['stock_count'] == $a['stock_count'] ) {
+		return 0;
+	}
+	return $b['stock_count'] < $a['stock_count'] ? -1 : 1;
+}
+
 function hpy_fdv_sort_by_attribute( $a, $b, $attribute ) {
 	return $a['id'][ $attribute ] - $b['id'][ $attribute ];
 }
@@ -396,7 +407,7 @@ function hpy_fdv_get_attribute_menu_order( $child, $parent ) {
 
 	$_primary = false;
 	foreach ( $attributes as $key => $value ) {
-		//Check for Primary Attribute. If not set, or multiple set, use first available Attribute.
+		// Check for Primary Attribute. If not set, or multiple set, use first available Attribute.
 		$primary = get_post_meta( $parent->get_id(), 'attribute_' . $key . '_primary', true );
 		if ( $primary ) {
 			$_primary = $key;

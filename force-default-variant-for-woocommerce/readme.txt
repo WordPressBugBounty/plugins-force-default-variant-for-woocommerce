@@ -2,8 +2,8 @@
 Contributors: HappyKite, morrowmedia, philmorrow, obailey
 Tags: WooCommerce, Variable product, WooCommerce variant, eCommerce
 Requires at least: 4.2
-Tested up to: 6.3.2
-Stable tag: 1.8
+Tested up to: 6.6.2
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,11 @@ This can all be changed via the WooCommerce -> Settings -> Product -> Variant me
 3. Go to WooCommerce -> Settings -> Products -> Variant to choose how to display the Variations.
 
 == Changelog ==
+= 1.8.1 - 28th September 2024 =
+* NEW - Added Stock Count to the first Sort selection.
+* UPDATE - Works with WooCommerce 9.3.3
+* UPDATE - Works with WordPress 6.6.2
+
 = 1.8 - 27th October 2023 =
 * FIX - Issue with multiple attributes fixed
 * NEW - Tested and declared compatibility with WC HPOS

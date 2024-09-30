@@ -6,9 +6,9 @@
  * Author: HappyKite
  * Author URI: http://www.happykite.co.uk/
  * Text Domain: force-default-variant-for-woocommerce
- * Version: 1.8
+ * Version: 1.8.1
  * WC requires at least: 2.4
- * WC tested up to: 8.2.1
+ * WC tested up to: 9.3.3
  */
 
 /*
@@ -26,51 +26,53 @@
  */
 
 /***************************
-* includes
-***************************/
-require dirname( __FILE__ ) . '/functions.php'; //Load Additional Functions
-require dirname( __FILE__ ) . '/includes/variations.php'; //Variant code
-require dirname( __FILE__ ) . '/includes/settings.php'; //Settings Area
-require dirname( __FILE__ ) . '/includes/clear-removal.php'; //Remove Clear Selection Text
+ * includes
+ ***************************/
+require __DIR__ . '/functions.php'; // Load Additional Functions
+require __DIR__ . '/includes/variations.php'; // Variant code
+require __DIR__ . '/includes/settings.php'; // Settings Area
+require __DIR__ . '/includes/clear-removal.php'; // Remove Clear Selection Text
 
 
 /***************************
-* Get Current WC Version.
-***************************/
+ * Get Current WC Version.
+ ***************************/
 
 function hpy_check_wc_version() {
-	//Checking if get_plugins is available.
+	// Checking if get_plugins is available.
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 
-	//Adding required variables
+	// Adding required variables
 	$woo_folder = get_plugins( '/woocommerce' );
 	$woo_file   = 'woocommerce.php';
 
-	//Checking if Version number is set.
+	// Checking if Version number is set.
 	if ( isset( $woo_folder[ $woo_file ]['Version'] ) ) {
 		return $woo_folder[ $woo_file ]['Version'];
 	} else {
 		return null;
 	}
-
 }
 
 /****************************
  * Declare HPOS Compatibility
- ****************************/
+ */
 
-add_action( 'before_woocommerce_init', function() {
-	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
 	}
-} );
+);
 
 
 /***************************
 * Activation Notice
-***************************/
+*/
 $woo_version = hpy_check_wc_version();
 
 if ( $woo_version < 2.4 ) {
@@ -111,8 +113,8 @@ function hpy_plugin_deactivation() {
 
 
 /***************************
-* Adding Plugin Settings Link
-***************************/
+ * Adding Plugin Settings Link
+ ***************************/
 
 function hpy_fdv_settings_link( $links ) {
 	$settings_link = '<a href="admin.php?page=wc-settings&tab=products&section=hpy_variants">Settings</a>';
@@ -139,7 +141,7 @@ add_action( 'init', 'hpy_fdv_load_textdomain' );
  *
  * @return void
  */
-function hpy_fdv_check_for_wc_on_activation() : void {
+function hpy_fdv_check_for_wc_on_activation(): void {
 	if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die( esc_html__( 'Please install and Activate WooCommerce.', 'force-default-variant-for-woocommerce' ), 'Plugin dependency check', array( 'back_link' => true ) );

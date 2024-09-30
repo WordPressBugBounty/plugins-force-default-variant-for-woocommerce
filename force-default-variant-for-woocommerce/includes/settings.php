@@ -16,7 +16,7 @@ add_filter( 'woocommerce_get_settings_products', 'hpy_woo_all_settings', 10, 2 )
 function hpy_woo_all_settings( $settings, $current_section ) {
 	/**
 	 * Check the current section is what we want
-	 **/
+	 */
 	if ( 'hpy_variants' === $current_section ) {
 		$settings_variant = array();
 
@@ -38,6 +38,7 @@ function hpy_woo_all_settings( $settings, $current_section ) {
 				'alphabetically' => __( 'Alphabetically', 'force-default-variant-for-woocommerce' ),
 				'price-low'      => __( 'Price Low -> High', 'force-default-variant-for-woocommerce' ),
 				'price-high'     => __( 'Price High -> Low', 'force-default-variant-for-woocommerce' ),
+				'stock'          => __( 'Stock Levels', 'force-default-variant-for-woocommerce' ),
 			),
 			'css'      => 'min-width:300px;',
 			'desc'     => __( 'How do you want to sort the variations', 'force-default-variant-for-woocommerce' ),
@@ -93,10 +94,8 @@ function hpy_woo_all_settings( $settings, $current_section ) {
 
 		/**
 		 * If not, return the standard settings
-		 **/
+		 */
 	} else {
 		return $settings;
 	}
 }
-
-
