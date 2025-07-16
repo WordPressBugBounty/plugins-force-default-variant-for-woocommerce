@@ -6,9 +6,9 @@
  * Author: HappyKite
  * Author URI: http://www.happykite.co.uk/
  * Text Domain: force-default-variant-for-woocommerce
- * Version: 1.8.1
+ * Version: 1.8.2
  * WC requires at least: 2.4
- * WC tested up to: 9.3.3
+ * WC tested up to: 10.2
  */
 
 /*
@@ -28,16 +28,15 @@
 /***************************
  * includes
  ***************************/
-require __DIR__ . '/functions.php'; // Load Additional Functions
-require __DIR__ . '/includes/variations.php'; // Variant code
-require __DIR__ . '/includes/settings.php'; // Settings Area
-require __DIR__ . '/includes/clear-removal.php'; // Remove Clear Selection Text
+require __DIR__ . '/functions.php'; // Load Additional Functions.
+require __DIR__ . '/includes/variations.php'; // Variant code.
+require __DIR__ . '/includes/settings.php'; // Settings Area.
+require __DIR__ . '/includes/clear-removal.php'; // Remove Clear Selection Text.
 
 
 /***************************
  * Get Current WC Version.
  ***************************/
-
 function hpy_check_wc_version() {
 	// Checking if get_plugins is available.
 	if ( ! function_exists( 'get_plugins' ) ) {
@@ -48,11 +47,11 @@ function hpy_check_wc_version() {
 	$woo_folder = get_plugins( '/woocommerce' );
 	$woo_file   = 'woocommerce.php';
 
-	// Checking if Version number is set.
-	if ( isset( $woo_folder[ $woo_file ]['Version'] ) ) {
+	// Get WooCommerce Version.
+	if ( isset( $woo_folder[ $woo_file ] ) && isset( $woo_folder[ $woo_file ]['Version'] ) ) {
 		return $woo_folder[ $woo_file ]['Version'];
 	} else {
-		return null;
+		return false;
 	}
 }
 
@@ -73,9 +72,10 @@ add_action(
 /***************************
 * Activation Notice
 */
-$woo_version = hpy_check_wc_version();
+$woo_version      = hpy_check_wc_version();
+$required_version = '2.4';
 
-if ( $woo_version < 2.4 ) {
+if ( ! hpy_fdv_wc_version_check( $required_version ) ) {
 	register_activation_hook( __FILE__, 'hpy_plugin_activation' );
 	function hpy_plugin_activation() {
 		$url       = admin_url( 'tools.php?page=uuc-options' );
@@ -115,7 +115,6 @@ function hpy_plugin_deactivation() {
 /***************************
  * Adding Plugin Settings Link
  ***************************/
-
 function hpy_fdv_settings_link( $links ) {
 	$settings_link = '<a href="admin.php?page=wc-settings&tab=products&section=hpy_variants">Settings</a>';
 	array_unshift( $links, $settings_link );
