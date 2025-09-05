@@ -1,28 +1,28 @@
 <?php
 /**
- * Plugin Name: WooCommerce Force Default Variant
+ * Plugin Name: Force Default Variant for WooCommerce
  * Plugin URI: http://www.happykite.co.uk
  * Description: Removes the standard WooCommerce 'Select an Option' from variant Drop Downs and the option to Clear Selection.
  * Author: HappyKite
  * Author URI: http://www.happykite.co.uk/
  * Text Domain: force-default-variant-for-woocommerce
- * Version: 1.8.2
+ * Version: 1.8.3
  * WC requires at least: 2.4
  * WC tested up to: 10.2
  */
 
 /*
- * This file is part of wooCommerce-force-default.
- * wooCommerce-force-default is free software: you can redistribute it and/or modify
+ * This file is part of force-default-variant-for-woocommerce.
+ * force-default-variant-for-woocommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * wooCommerce-force-default is distributed in the hope that it will be useful,
+ * force-default-variant-for-woocommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with wooCommerce-force-default.  If not, see <http://www.gnu.org/licenses/>.
+ * along with force-default-variant-for-woocommerce.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /***************************
@@ -80,7 +80,7 @@ if ( ! hpy_fdv_wc_version_check( $required_version ) ) {
 	function hpy_plugin_activation() {
 		$url       = admin_url( 'tools.php?page=uuc-options' );
 		$notices   = get_option( 'hpy_plugin_deferred_admin_notices', array() );
-		$notices[] = 'Attention: WooCommerce Force Default Variant requires at least WooCommerce Version 2.5, you currently have ' . hpy_check_wc_version() . '. Please update WooCommerce before activating this plugin.';
+		$notices[] = 'Attention: Force Default Variant for WooCommerce requires at least WooCommerce Version 2.5, you currently have ' . hpy_check_wc_version() . '. Please update WooCommerce before activating this plugin.';
 		update_option( 'hpy_plugin_deferred_admin_notices', $notices );
 	}
 

@@ -1,9 +1,9 @@
-=== WooCommerce Force Default Variant ===
+=== Force Default Variant for WooCommerce ===
 Contributors: HappyKite, morrowmedia, philmorrow, obailey
 Tags: WooCommerce, Variable product, WooCommerce variant, eCommerce
 Requires at least: 4.2
 Tested up to: 6.8.2
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,10 @@ This can all be changed via the WooCommerce -> Settings -> Product -> Variant me
 3. Go to WooCommerce -> Settings -> Products -> Variant to choose how to display the Variations.
 
 == Changelog ==
+= 1.8.3 - 5th September 2025 =
+* UPDATE - Works with WooCommerce 10.2+
+* UPDATE - Branding Changes - Comply with WC Trademark.
+
 = 1.8.2 - 16th July 2025 =
 * FIX - WooCommerce 10.2 Version check fix.
 * UPDATE - Works with WordPress 6.8.2
